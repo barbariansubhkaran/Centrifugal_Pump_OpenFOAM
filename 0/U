@@ -1,0 +1,136 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  dev
+     \\/     M anipulation  |
+ *---------------------------------------------------------------------------*
+   File created by CFD support s.r.o.  on   Sat Jun  5 20:02:16 2021
+                     http://www.cdfsupport.com
+ *---------------------------------------------------------------------------*
+   TCAE 21.02 licensed to:
+      TCAE Test License
+      Trial Version
+      TCAE 21.02
+      Annual
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version 2.0;
+    format ascii;
+    class volVectorField;
+    location "TCFD/0";
+    object U;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions [0 1 -1 0 0 0 0];
+
+internalField uniform (1 0 5);
+
+boundaryField
+{
+    inletTube_inletTube-inlet_inlet
+    {
+        type flowRateInletVelocity;
+        volumetricFlowRate tableFile;
+        volumetricFlowRateCoeffs
+        {
+            file "$FOAM_CASE/constant/boundaryConditions/U.inlet_inletTube_inletTube-inlet_inlet";
+            format foam;
+        }
+        value $internalField;
+    }
+    interface_volute_inletTube_inlet
+    {
+        type cyclicAMI;
+    }
+    interface_inletTube_volute_outlet
+    {
+        type cyclicAMI;
+    }
+    interface_volute_impeller_inlet
+    {
+        type cyclicAMI;
+    }
+    interface_impeller_volute_outlet
+    {
+        type cyclicAMI;
+    }
+    interface_impeller_volute_inlet
+    {
+        type cyclicAMI;
+    }
+    interface_volute_impeller_outlet
+    {
+        type cyclicAMI;
+    }
+    interface_voluteExtension_volute_inlet
+    {
+        type cyclicAMI;
+    }
+    interface_volute_voluteExtension_outlet
+    {
+        type cyclicAMI;
+    }
+    ".*_outlet"
+    {
+        type inletOutlet;
+        value $internalField;
+        inletValue uniform (0 0 0);
+    }
+    voluteExtension_voluteExtension-outlet_outlet
+    {
+        type inletOutlet;
+        value $internalField;
+        inletValue uniform (0 0 0);
+    }
+    ".*_wall"
+    {
+        type movingWallVelocity;
+        value uniform (0 0 0);
+    }
+    volute_impeller-hubWall_wall
+    {
+        type rotatingWallVelocity;
+        axis (0 0 1);
+        origin (0 0 0);
+        omega -185.354;
+    }
+    volute_impeller-outerHub_wall
+    {
+        type rotatingWallVelocity;
+        axis (0 0 1);
+        origin (0 0 0);
+        omega -185.354;
+    }
+    volute_impeller-outerShroud_wall
+    {
+        type rotatingWallVelocity;
+        axis (0 0 1);
+        origin (0 0 0);
+        omega -185.354;
+    }
+    volute_impeller-shroudWall_wall
+    {
+        type rotatingWallVelocity;
+        axis (0 0 1);
+        origin (0 0 0);
+        omega -185.354;
+    }
+    ".*_ami"
+    {
+        type cyclicAMI;
+    }
+    ".*_empty"
+    {
+        type empty;
+    }
+    ".*_symm"
+    {
+        type symmetry;
+    }
+}
+
+// ************************************************************************* //

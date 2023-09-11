@@ -1,0 +1,53 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  dev
+     \\/     M anipulation  |
+ *---------------------------------------------------------------------------*
+   File created by CFD support s.r.o.  on   Sat Jun  5 20:02:16 2021
+                     http://www.cdfsupport.com
+ *---------------------------------------------------------------------------*
+   TCAE 21.02 licensed to:
+      TCAE Test License
+      Trial Version
+      TCAE 21.02
+      Annual
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version 2.0;
+    format ascii;
+    class dictionary;
+    location "TCFD/constant";
+    object turbulenceProperties;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+simulationType RAS;
+
+RAS
+{
+    model kOmegaSST;
+    turbulence on;
+    printCoeffs on;
+    kOmegaSSTCoeffs
+    {
+        alphaK1 0.85;
+        alphaK2 1;
+        alphaOmega1 0.5;
+        alphaOmega2 0.856;
+        beta1 0.075;
+        beta2 0.0828;
+        betaStar 0.09;
+        gamma1 0.555556;
+        gamma2 0.44;
+        a1 0.31;
+        b1 1;
+        c1 10;
+        F3 false;
+    }
+}
+
+// ************************************************************************* //

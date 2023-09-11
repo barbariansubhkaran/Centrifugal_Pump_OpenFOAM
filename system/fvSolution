@@ -1,0 +1,121 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  dev
+     \\/     M anipulation  |
+ *---------------------------------------------------------------------------*
+   File created by CFD support s.r.o.  on   Sun Jun  6 11:43:15 2021
+                     http://www.cdfsupport.com
+ *---------------------------------------------------------------------------*
+   TCAE 21.02 licensed to:
+      TCAE Test License
+      Trial Version
+      TCAE 21.02
+      Annual
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version 2.0;
+    format ascii;
+    class dictionary;
+    location "TCFD/system";
+    object fvSolution;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solvers
+{
+    p
+    {
+        solver GAMG;
+        tolerance 1e-08;
+        relTol 0.001;
+        smoother GaussSeidel;
+        cacheAgglomeration true;
+        nCellsInCoarsestLevel 20;
+        agglomerator faceAreaPair;
+        mergeLevels 1;
+    }
+    pcorrFinal
+    {
+      solver GAMG;
+      tolerance 1e-08;
+      relTol 0.001;
+      smoother GaussSeidel;
+      cacheAgglomeration true;
+      nCellsInCoarsestLevel 20;
+      agglomerator faceAreaPair;
+      mergeLevels 1;
+    }
+    U
+    {
+        type coupled;
+        solver SmoothSolver;
+        tolerance (1e-10 1e-10 1e-10);
+        relTol (0.1 0.1 0.1);
+        smoother GaussSeidel;
+        nSweeps 1;
+    }
+    UFinal
+    {
+        type coupled;
+        solver SmoothSolver;
+        tolerance (1e-10 1e-10 1e-10);
+        relTol (0.1 0.1 0.1);
+        smoother GaussSeidel;
+        nSweeps 1;
+    }
+    "(h|e|k|omega|epsilon|nuTilda|gammaInt|ReThetat|T)"
+    {
+        solver smoothSolver;
+        smoother GaussSeidel;
+        nSweeps 1;
+        tolerance 1e-20;
+        relTol 0.1;
+    }
+}
+
+SIMPLE
+{
+    consistent false;
+    pRefValue 400000;
+    pRefPoint (0 0 0);
+    nNonOrthogonalCorrectors 0;
+}
+
+boundingCoeffs
+{
+    pMin [0 2 -2 0 0 0 0]  -5000;
+    pMax [0 2 -2 0 0 0 0]  5000;
+    UMax 1000;
+}
+
+relaxationFactors
+{
+    fields
+    {
+        p 0.2;
+    }
+    equations
+    {
+        U 0.5;
+        "(k|epsilon|omega|nuTilda|gammaInt|ReTheta)" 0.5;
+    }
+}
+
+earlyTermination
+{
+    skip
+    (
+         (1631 2000)
+         (3186 4000)
+         (5654 6000)
+         (7351 8000)
+         (9623 10000)
+         (11096 12000)
+    );
+}
+
+// ************************************************************************* //
