@@ -8,6 +8,6 @@ Steady-state simulation of a Centrifugal Pump
 
 Run the case using:
 
-\\\
+```
 ./run.sh
-\\\\
+```
